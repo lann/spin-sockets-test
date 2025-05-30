@@ -1,0 +1,23 @@
+spin_manifest_version = 2
+
+[application]
+name = "sockets-test"
+version = "0.1.0"
+authors = ["Lann Martin <lann.martin@fermyon.com>"]
+description = ""
+
+[variables]
+address = { required = true }
+
+[[trigger.http]]
+route = "/..."
+component = "sockets-test"
+
+[component.sockets-test]
+source = "target/wasm32-wasip1/release/sockets_test.wasm"
+allowed_outbound_hosts = ["*://{{address}}"]
+[component.sockets-test.variables]
+address = "{{address}}"
+[component.sockets-test.build]
+command = "cargo build --target wasm32-wasip1 --release"
+watch = ["src/**/*.rs", "Cargo.toml"]
